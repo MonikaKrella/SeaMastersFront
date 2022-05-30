@@ -4,23 +4,49 @@ import {
   BoardWrapperStyled,
   GameBoardStyled,
 } from './BoardStyled';
+import { ICoords } from '../../../types/ICoords.interface';
+import { SquareEnum } from '../../../types/square.enum';
 
 type BoardPropType = {
-  boardData: any;
+  shipsCoords?: ICoords[] | null;
+  shootingArea?: number[][];
 };
 
 export function Board(prop: BoardPropType) {
-  console.log(prop.boardData);
   const numbers: JSX.Element[] = [];
   for (let index = 0; index < 10; index++) {
     numbers.push(<Square key={`${index}a`} content={index + 1}></Square>);
   }
 
   const fields: JSX.Element[][] = [];
-  for (let row = 0; row < 10; row++) {
-    fields.push([]);
-    for (let col = 0; col < 10; col++) {
-      fields[row].push(<Square key={`${col}${row}`} />);
+
+  if (prop.shootingArea) {
+    for (let row = 0; row < 10; row++) {
+      fields.push([]);
+      for (let col = 0; col < 10; col++) {
+        fields[row].push(
+          <Square bg={prop.shootingArea[row][col]} key={`${col}${row}`} />
+        );
+      }
+    }
+  } else if (prop.shipsCoords) {
+    for (let row = 0; row < 10; row++) {
+      fields.push([]);
+      for (let col = 0; col < 10; col++) {
+        fields[row].push(<Square bg={SquareEnum.Empty} key={`${col}${row}`} />);
+      }
+    }
+    prop.shipsCoords.forEach((coords) => {
+      fields[coords.X][coords.Y] = (
+        <Square key={`${coords.X}${coords.Y}`} bg={SquareEnum.Ship} />
+      );
+    });
+  } else {
+    for (let row = 0; row < 10; row++) {
+      fields.push([]);
+      for (let col = 0; col < 10; col++) {
+        fields[row].push(<Square key={`${col}${row}`} />);
+      }
     }
   }
 

@@ -1,23 +1,29 @@
 import styled from 'styled-components';
 
+import { SquareEnum } from '../../../types/square.enum';
+
+interface Props {
+  bg?: SquareEnum;
+}
+
 const getColor = (props: any) => {
   switch (props.bg) {
-    case 'Unknown':
+    case SquareEnum.Unknown:
       return `#3B79CD `;
-    case 'Hit':
+    case SquareEnum.Hit:
       return `#993115`;
-    case 'Miss':
+    case SquareEnum.Miss:
       return `#A09F8B`;
-    case 'Empty':
+    case SquareEnum.Empty:
       return `#7EA1BB`;
-    case 'Ship':
+    case SquareEnum.Ship:
       return `#A76A21`;
     default:
       return `#3B79CD`;
   }
 };
 
-export const SquareStyled = styled.div`
+export const SquareStyled = styled.div<Props>`
   border-width: 1px;
   border-style: solid;
   border-color: lightblue;

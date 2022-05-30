@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const MainButtonStyled = styled.button`
+  background-color: ${({ theme }) => theme.colors.header};
   max-width: 20rem;
   max-height: 8rem;
   border-radius: 10px;
@@ -9,7 +10,6 @@ export const MainButtonStyled = styled.button`
   font-size: 1rem;
   font-weight: 700;
   padding: 0.5rem;
-  background-color: '#0d0e10';
 
   &:hover {
     opacity: 0.9;

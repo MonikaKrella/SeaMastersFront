@@ -49,14 +49,18 @@ function PlayerPanel(prop: PropTypes) {
         {prop.player?.Name || 'Pirate'}
       </NameHeading>
       <Board shipsCoords={shipCoords} />
-      {/* <Board2
+      <Board2
         shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
-        boardRaport={prop.raport?.ActivePlayer.PlayerShootingBoard.ShootingArea}
-      /> */}
-      <Board
+        boardRaport={
+          isActive
+            ? prop.raport?.ActivePlayer.PlayerShootingBoard.ShootingArea
+            : null
+        }
+      />
+      {/* <Board
         shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
         boardRaport={isActive ? prop.raport : null}
-      />
+      /> */}
     </PlayerPanelStyled>
   );
 }

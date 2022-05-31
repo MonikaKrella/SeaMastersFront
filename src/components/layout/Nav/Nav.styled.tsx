@@ -4,7 +4,7 @@ export const NavStyled = styled.nav`
   width: auto;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.header};
-  padding: 0 1rem;
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;

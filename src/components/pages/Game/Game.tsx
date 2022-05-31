@@ -6,6 +6,8 @@ import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
+import { getRandomMoveMock } from '../../../mock/oneMoveMock';
+import { prepareGameMock } from '../../../mock/prepareGameMock';
 
 function Game() {
   const [player1, setPlayer1] = useState<Iplayer | null>(null);
@@ -28,6 +30,7 @@ function Game() {
 
   useEffect(() => {
     if (raports) {
+      console.log(raports);
       if (raports.length === 1) {
         setRaport(raports[0]);
       } else {
@@ -47,16 +50,19 @@ function Game() {
   }, [raports]);
 
   const prepareGame = async () => {
-    try {
-      const response = await getPlayers('Matylda', 'Bodzio');
-      if (response.ok) {
-        const players = await response.json();
-        setPlayer1(players[0]);
-        setPlayer2(players[1]);
-      }
-    } catch (error: any) {
-      alert(error);
-    }
+    const players = prepareGameMock();
+    setPlayer1(players[0]);
+    setPlayer2(players[1]);
+    // try {
+    //   const response = await getPlayers('Matylda', 'Bodzio');
+    //   if (response.ok) {
+    //     const players = await response.json();
+    //     setPlayer1(players[0]);
+    //     setPlayer2(players[1]);
+    //   }
+    // } catch (error: any) {
+    //   alert(error);
+    // }
   };
 
   const autoSymulation = () => {
@@ -64,16 +70,19 @@ function Game() {
   };
 
   const oneMove = async () => {
-    try {
-      const gettedRaports = await makeOneTurn();
-      if (!gettedRaports) {
-        alert('Ooops, something went wrong');
-      } else {
-        setRaports(gettedRaports);
-      }
-    } catch (error: any) {
-      alert(error);
-    }
+    const gettedRaports = getRandomMoveMock();
+    setRaports(gettedRaports);
+    // try {
+    //   const gettedRaports = await makeOneTurn();
+    //   console.log(gettedRaports);
+    //   if (!gettedRaports) {
+    //     alert('Ooops, something went wrong');
+    //   } else {
+    //     setRaports(gettedRaports);
+    //   }
+    // } catch (error: any) {
+    //   alert(error);
+    // }
   };
 
   return (

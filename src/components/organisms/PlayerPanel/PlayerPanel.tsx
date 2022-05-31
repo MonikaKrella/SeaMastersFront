@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import Board from '../Board/Board';
-import Board2 from '../Board/Board2';
 import { ICoords } from '../../../types/interfaces/ICoords.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
@@ -35,11 +34,10 @@ function PlayerPanel(prop: PropTypes) {
     if (prop.raport) {
       if (prop.raport.ActivePlayer.Name === prop.player?.Name) {
         setIsActive(true);
-        setRaport(prop.raport);
       } else {
         setIsActive(false);
-        setRaport(null);
       }
+      setRaport(prop.raport);
     }
   }, [prop]);
 
@@ -49,18 +47,14 @@ function PlayerPanel(prop: PropTypes) {
         {prop.player?.Name || 'Pirate'}
       </NameHeading>
       <Board shipsCoords={shipCoords} />
-      <Board2
+      <Board
         shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
         boardRaport={
           isActive
             ? prop.raport?.ActivePlayer.PlayerShootingBoard.ShootingArea
-            : null
+            : prop.raport?.DefendingPlayerShootingBoard.ShootingArea
         }
       />
-      {/* <Board
-        shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
-        boardRaport={isActive ? prop.raport : null}
-      /> */}
     </PlayerPanelStyled>
   );
 }

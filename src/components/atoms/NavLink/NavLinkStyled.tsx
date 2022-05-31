@@ -5,6 +5,7 @@ export const NavLinkStyled = styled(Link)`
   display: flex;
   align-items: flex-end;
   text-decoration: none;
+  padding: 0.1rem;
   border: 1px solid black;
   border-radius: 10px;
 `;

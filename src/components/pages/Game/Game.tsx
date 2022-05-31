@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import GameLegend from '../../organisms/GameLegend/GameLegend';
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
@@ -18,7 +19,7 @@ function Game() {
     if (runAuto) {
       const interval = setInterval(() => {
         oneMove();
-      }, 1500);
+      }, 800);
       if (!runAuto) {
         clearInterval(interval);
       }
@@ -30,7 +31,6 @@ function Game() {
   }, [runAuto]);
 
   useEffect(() => {
-    console.log(player1?.Name);
     if (raports) {
       if (raports.length === 1) {
         setRaport(raports[0]);
@@ -42,7 +42,7 @@ function Game() {
           if (i > raports.length - 1) {
             clearInterval(interval);
           }
-        }, 300);
+        }, 200);
         return () => {
           clearInterval(interval);
         };
@@ -84,6 +84,11 @@ function Game() {
     }
   };
 
+  if (raport?.HasEnemyLost) {
+    setRunAuto(false);
+    alert(raport.ActivePlayer.Name + ' won this battle!');
+  }
+
   return (
     <GameWrapper>
       <BoardsWrapper>
@@ -95,6 +100,7 @@ function Game() {
         <MainButton btnText="One move" handleOnClick={oneMove} />
         <MainButton btnText="Start auto simulation" handleOnClick={startAuto} />
         <MainButton btnText="Stop auto simulation" handleOnClick={stopAuto} />
+        <GameLegend />
       </UserPanelWrapper>
     </GameWrapper>
   );

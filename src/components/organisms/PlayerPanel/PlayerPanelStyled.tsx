@@ -13,13 +13,12 @@ const isActive = (props: INameHeading) => {
 };
 
 export const PlayerPanelStyled = styled.div`
-  margin: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 export const NameHeading = styled.h2<INameHeading>`
-  margin: 0.5rem;
+  margin: 0.3rem;
   text-decoration: ${(props) => isActive(props)};
 `;

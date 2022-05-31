@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import Board from '../Board/Board';
-import { ICoords } from '../../../types/ICoords.interface';
-import { Iplayer } from '../../../types/Iplayer.interface';
+import { ICoords } from '../../../types/interfaces/ICoords.interface';
+import { IRaport } from '../../../types/interfaces/IRaport.interface';
+import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
 import { NameHeading, PlayerPanelStyled } from './PlayerPanelStyled';
-import { IRaport } from '../../../types/IRaport.interface';
 
 type PropTypes = {
   player?: Iplayer | null;
@@ -16,7 +16,6 @@ function PlayerPanel(prop: PropTypes) {
   const [raport, setRaport] = useState<IRaport | null>(null);
   const [shipCoords, setShipCoords] = useState<ICoords[] | null>(null);
   const [isActive, setIsActive] = useState(false);
-  console.log(isActive);
 
   useEffect(() => {
     if (prop.player) {
@@ -33,20 +32,29 @@ function PlayerPanel(prop: PropTypes) {
 
   useEffect(() => {
     if (prop.raport) {
-      console.log(prop.raport);
-      // if (prop.raport.ActivePlayer.Name === player?.Name) {
-      //   setIsActive(true);
-      // }
+      if (prop.raport.ActivePlayer.Name === prop.player?.Name) {
+        setIsActive(true);
+      } else {
+        setIsActive(false);
+      }
+      setRaport(prop.raport);
     }
-  }, [prop.raport, prop.player]);
+  }, [prop]);
 
   return (
     <PlayerPanelStyled>
       <NameHeading active={isActive}>
-        {prop.player?.Name || 'Gracz'}
+        {prop.player?.Name || 'Pirate'}
       </NameHeading>
       <Board shipsCoords={shipCoords} />
-      <Board shootingArea={prop.player?.PlayerShootingBoard.ShootingArea} />
+      <Board
+        shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
+        boardRaport={
+          isActive
+            ? prop.raport?.ActivePlayer.PlayerShootingBoard.ShootingArea
+            : prop.raport?.DefendingPlayerShootingBoard.ShootingArea
+        }
+      />
     </PlayerPanelStyled>
   );
 }

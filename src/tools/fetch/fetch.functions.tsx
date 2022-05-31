@@ -1,5 +1,5 @@
-import { IRaport } from '../../types/IRaport.interface';
 import { GetOptions, PostHeaders } from './fetch.consts';
+import { IRaport } from '../../types/interfaces/IRaport.interface';
 
 export async function getPlayers(
   name1: string,

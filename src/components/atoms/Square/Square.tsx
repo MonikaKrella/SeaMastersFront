@@ -1,4 +1,4 @@
-import { SquareEnum } from '../../../types/square.enum';
+import { SquareEnum } from '../../../types/enums/square.enum';
 import { SquareStyled } from './SquareStyled';
 
 type PropType = {

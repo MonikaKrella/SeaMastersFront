@@ -1,6 +1,7 @@
-import { PostHeaders } from './fetch.consts';
+import { IRaport } from '../../types/IRaport.interface';
+import { GetOptions, PostHeaders } from './fetch.consts';
 
-export async function startGame(
+export async function getPlayers(
   name1: string,
   name2: string
 ): Promise<Response> {
@@ -21,4 +22,16 @@ export async function startGame(
   );
 
   return response;
+}
+
+export async function makeOneTurn() {
+  const response = await fetch(
+    'https://localhost:7014/api/Battleship/run-turn',
+    GetOptions
+  );
+  if (response.ok) {
+    const raport = await response.json();
+    return raport as IRaport[];
+  }
+  return null;
 }

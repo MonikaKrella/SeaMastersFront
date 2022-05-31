@@ -7,9 +7,9 @@ type PropType = {
 };
 function Square(prop?: PropType) {
   if (prop?.content) {
-    return <SquareStyled>{prop.content}</SquareStyled>;
+    return <SquareStyled bg={prop.bg}>{prop.content}</SquareStyled>;
   }
-  return <SquareStyled></SquareStyled>;
+  return <SquareStyled bg={prop?.bg}></SquareStyled>;
 }
 
 export default Square;

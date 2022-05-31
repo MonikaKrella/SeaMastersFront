@@ -3,8 +3,6 @@ import { ThemeProvider } from 'styled-components';
 
 import Game from './components/pages/Game/Game';
 import GlobalStyles from './components/layout/Gobal/Global';
-import Home from './components/pages/Home/Home';
-import MainButton from './components/atoms/MainButton/MainButton';
 import Nav from './components/layout/Nav/Nav';
 import Rules from './components/pages/Rules/Rules';
 import { Container } from './components/layout/Container/Container.styled';
@@ -26,7 +24,6 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<Game />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/rules" element={<Rules />} />
           </Routes>
         </Container>

@@ -1,59 +1,90 @@
+import { useEffect, useRef, useState } from 'react';
+
 import Square from '../../atoms/Square/Square';
 import {
   BoardNumbersStyled,
   BoardWrapperStyled,
   GameBoardStyled,
 } from './BoardStyled';
-import { ICoords } from '../../../types/ICoords.interface';
-import { SquareEnum } from '../../../types/square.enum';
+import { BoardRaportType } from '../../../types/typeAliases/boardRaport.type';
+import { ICoords } from '../../../types/interfaces/ICoords.interface';
+import { SquareEnum } from '../../../types/enums/square.enum';
+import { createEmptySquaresBoard } from '../../../tools/boardTools/emptyBoard.creator';
 
 type BoardPropType = {
   shipsCoords?: ICoords[] | null;
   shootingArea?: number[][];
+  boardRaport?: BoardRaportType | null;
 };
 
 export function Board(prop: BoardPropType) {
+  const [fieldsArr, setFieldsArr] = useState<JSX.Element[][]>([]);
+  const refFields = useRef<JSX.Element[][]>([]);
+  //const [isArrUpdated, setIsArrUpdated] = useState(false);
   const numbers: JSX.Element[] = [];
   for (let index = 0; index < 10; index++) {
     numbers.push(<Square key={`${index}a`} content={index + 1}></Square>);
   }
 
-  const fields: JSX.Element[][] = [];
-
-  if (prop.shootingArea) {
-    for (let row = 0; row < 10; row++) {
-      fields.push([]);
-      for (let col = 0; col < 10; col++) {
-        fields[row].push(
-          <Square bg={prop.shootingArea[row][col]} key={`${col}${row}`} />
+  useEffect(() => {
+    let fields: JSX.Element[][] = [];
+    if (prop.shootingArea) {
+      fields = createEmptySquaresBoard(prop.shootingArea);
+      setFieldsArr(fields);
+      refFields.current = fields;
+    } else if (prop.shipsCoords) {
+      fields = createEmptySquaresBoard();
+      prop.shipsCoords.forEach((coords) => {
+        fields[coords.Y][coords.X] = (
+          <Square key={`${coords.Y}${coords.X}`} bg={SquareEnum.Ship} />
         );
-      }
+      });
+      setFieldsArr(fields);
+    } else if (fieldsArr.length === 0) {
+      fields = createEmptySquaresBoard();
+      setFieldsArr(fields);
+      refFields.current = fields;
     }
-  } else if (prop.shipsCoords) {
-    for (let row = 0; row < 10; row++) {
-      fields.push([]);
-      for (let col = 0; col < 10; col++) {
-        fields[row].push(<Square bg={SquareEnum.Empty} key={`${col}${row}`} />);
-      }
-    }
-    prop.shipsCoords.forEach((coords) => {
-      fields[coords.X][coords.Y] = (
-        <Square key={`${coords.X}${coords.Y}`} bg={SquareEnum.Ship} />
-      );
-    });
+  }, [prop]);
+
+  // useEffect(() => {
+  //   if (prop.boardRaport) {
+  //     const effect: SquareEnum = prop.boardRaport.ShootedFieldState;
+  //     refFields.current = fieldsArr;
+  //     refFields.current[prop.boardRaport.ShotCoordinates.Y][
+  //       prop.boardRaport.ShotCoordinates.X
+  //     ] = (
+  //       <Square
+  //         key={`${prop.boardRaport.ShotCoordinates.Y}${prop.boardRaport.ShotCoordinates.X}`}
+  //         bg={effect}
+  //       />
+  //     );
+  //     setFieldsArr(refFields.current);
+  //   } else {
+  //     refFields.current = fieldsArr;
+  //   }
+  // }, [prop]);
+
+  let temporaryArr = refFields.current;
+  if (prop.boardRaport) {
+    const effect: SquareEnum = prop.boardRaport.ShootedFieldState;
+    temporaryArr = refFields.current;
+    temporaryArr[prop.boardRaport.ShotCoordinates.Y][
+      prop.boardRaport.ShotCoordinates.X
+    ] = (
+      <Square
+        key={`${prop.boardRaport.ShotCoordinates.Y}${prop.boardRaport.ShotCoordinates.X}`}
+        bg={effect}
+      />
+    );
   } else {
-    for (let row = 0; row < 10; row++) {
-      fields.push([]);
-      for (let col = 0; col < 10; col++) {
-        fields[row].push(<Square key={`${col}${row}`} />);
-      }
-    }
+    temporaryArr = fieldsArr;
   }
 
   return (
     <BoardWrapperStyled>
       <BoardNumbersStyled>{numbers}</BoardNumbersStyled>
-      <GameBoardStyled>{fields}</GameBoardStyled>;
+      <GameBoardStyled>{temporaryArr}</GameBoardStyled>
     </BoardWrapperStyled>
   );
 }

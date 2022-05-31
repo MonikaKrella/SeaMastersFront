@@ -1,6 +1,6 @@
 import { ICoords } from './ICoords.interface';
 import { Iplayer } from './Iplayer.interface';
-import { SquareEnum } from './square.enum';
+import { SquareEnum } from '../enums/square.enum';
 
 export interface IRaport {
   ActivePlayer: Iplayer;

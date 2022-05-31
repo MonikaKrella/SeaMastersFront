@@ -1,25 +1,56 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
-import { Iplayer } from '../../../types/Iplayer.interface';
+import { IRaport } from '../../../types/interfaces/IRaport.interface';
+import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
-import { IRaport } from '../../../types/IRaport.interface';
 
 function Game() {
   const [player1, setPlayer1] = useState<Iplayer | null>(null);
   const [player2, setPlayer2] = useState<Iplayer | null>(null);
   const [raport, setRaport] = useState<IRaport | null>(null);
-  console.log(player1);
-  console.log(player2);
+  const [raports, setRaports] = useState<IRaport[] | null>(null);
+  const [runAuto, setRunAuto] = useState(false);
+
+  useEffect(() => {
+    if (runAuto) {
+      const interval = setInterval(() => {
+        oneMove();
+      }, 1500);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [runAuto]);
+
+  useEffect(() => {
+    if (raports) {
+      if (raports.length === 1) {
+        setRaport(raports[0]);
+      } else {
+        let i = 0;
+        const interval = setInterval(() => {
+          setRaport(raports[i]);
+          i++;
+          if (i > raports.length - 1) {
+            clearInterval(interval);
+          }
+        }, 300);
+        return () => {
+          clearInterval(interval);
+        };
+      }
+    }
+  }, [raports]);
 
   const prepareGame = async () => {
     try {
       const response = await getPlayers('Matylda', 'Bodzio');
       if (response.ok) {
         const players = await response.json();
-        console.log(players);
         setPlayer1(players[0]);
         setPlayer2(players[1]);
       }
@@ -28,30 +59,23 @@ function Game() {
     }
   };
 
-  const autoSymulation = async () => {
-    try {
-      // const response = await getPlayers('Matylda', 'Bodzio');
-      // if (response.ok) {
-      //   const players = await response.json();
-      //   setPlayer1(players[0]);
-      //   setPlayer2(players[1]);
-      // }
-    } catch (error: any) {
-      alert(error);
-    }
+  const autoSymulation = () => {
+    setRunAuto(true);
   };
 
   const oneMove = async () => {
     try {
-      const raports = await makeOneTurn();
-      if (!raport) {
-        alert('Ooops, coś poszło nie tak');
+      const gettedRaports = await makeOneTurn();
+      if (!gettedRaports) {
+        alert('Ooops, something went wrong');
       } else {
+        setRaports(gettedRaports);
       }
     } catch (error: any) {
       alert(error);
     }
   };
+
   return (
     <GameWrapper>
       <BoardsWrapper>
@@ -61,7 +85,7 @@ function Game() {
       <UserPanelWrapper>
         <MainButton btnText="Prepare game" handleOnClick={prepareGame} />
         <MainButton
-          btnText="Start auto symulation"
+          btnText="Start auto simulation"
           handleOnClick={autoSymulation}
         />
         <MainButton btnText="One move" handleOnClick={oneMove} />

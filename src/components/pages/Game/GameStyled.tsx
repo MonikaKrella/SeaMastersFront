@@ -4,7 +4,7 @@ export const BoardsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 3rem;
+  gap: 4rem;
 `;
 
 export const UserPanelWrapper = styled.div`

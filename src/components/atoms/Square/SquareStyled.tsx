@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { SquareEnum } from '../../../types/square.enum';
+import { SquareEnum } from '../../../types/enums/square.enum';
 
 interface Props {
   bg?: SquareEnum;

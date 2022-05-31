@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
@@ -19,6 +19,9 @@ function Game() {
       const interval = setInterval(() => {
         oneMove();
       }, 1500);
+      if (!runAuto) {
+        clearInterval(interval);
+      }
 
       return () => {
         clearInterval(interval);
@@ -27,6 +30,7 @@ function Game() {
   }, [runAuto]);
 
   useEffect(() => {
+    console.log(player1?.Name);
     if (raports) {
       if (raports.length === 1) {
         setRaport(raports[0]);
@@ -59,8 +63,12 @@ function Game() {
     }
   };
 
-  const autoSymulation = () => {
+  const startAuto = () => {
     setRunAuto(true);
+  };
+
+  const stopAuto = () => {
+    setRunAuto(false);
   };
 
   const oneMove = async () => {
@@ -84,11 +92,9 @@ function Game() {
       </BoardsWrapper>
       <UserPanelWrapper>
         <MainButton btnText="Prepare game" handleOnClick={prepareGame} />
-        <MainButton
-          btnText="Start auto simulation"
-          handleOnClick={autoSymulation}
-        />
         <MainButton btnText="One move" handleOnClick={oneMove} />
+        <MainButton btnText="Start auto simulation" handleOnClick={startAuto} />
+        <MainButton btnText="Stop auto simulation" handleOnClick={stopAuto} />
       </UserPanelWrapper>
     </GameWrapper>
   );

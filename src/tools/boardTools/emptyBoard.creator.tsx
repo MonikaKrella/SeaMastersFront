@@ -17,3 +17,15 @@ export function createEmptySquaresBoard(shootingArea?: number[][]) {
   }
   return fields;
 }
+
+export function createBoardWithNumbers() {
+  const fields: number[][] = [];
+
+  for (let row = 0; row < 10; row++) {
+    fields.push([]);
+    for (let col = 0; col < 10; col++) {
+      fields[row].push(0);
+    }
+  }
+  return fields;
+}

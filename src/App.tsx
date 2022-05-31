@@ -10,8 +10,7 @@ import { Container } from './components/layout/Container/Container.styled';
 const theme = {
   colors: {
     header: '#5688cb',
-    body: '#fafad2',
-    footer: '#A4B4CA',
+    body: '#ccccca',
   },
 };
 

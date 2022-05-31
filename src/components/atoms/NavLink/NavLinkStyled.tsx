@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const NavLinkStyled = styled(Link)`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   text-decoration: none;
   padding: 0.1rem;
   border: 1px solid black;
@@ -17,5 +17,4 @@ export const LinkTextStyled = styled.p`
   font-size: 2rem;
   font-weight: 600;
   text-decoration: none;
-  align-self: flex-end;
 `;

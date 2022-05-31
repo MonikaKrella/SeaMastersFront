@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
+import { BOARD_ACTIONS } from '../../../consts/context.consts';
+import { BoardsContext } from '../../../context/BoardsContext';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
+import { createBoardWithNumbers } from '../../../tools/boardTools/emptyBoard.creator';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
 
 function Game() {
@@ -13,12 +16,16 @@ function Game() {
   const [raport, setRaport] = useState<IRaport | null>(null);
   const [raports, setRaports] = useState<IRaport[] | null>(null);
   const [runAuto, setRunAuto] = useState(false);
+  const [boardState, boardDispatch] = useContext(BoardsContext);
 
   useEffect(() => {
     if (runAuto) {
       const interval = setInterval(() => {
         oneMove();
       }, 1500);
+      if (!runAuto) {
+        clearInterval(interval);
+      }
 
       return () => {
         clearInterval(interval);
@@ -27,6 +34,7 @@ function Game() {
   }, [runAuto]);
 
   useEffect(() => {
+    console.log(player1?.Name);
     if (raports) {
       if (raports.length === 1) {
         setRaport(raports[0]);
@@ -53,14 +61,31 @@ function Game() {
         const players = await response.json();
         setPlayer1(players[0]);
         setPlayer2(players[1]);
+        boardDispatch({
+          type: BOARD_ACTIONS.SET_DATA,
+          payload: {
+            player1: {
+              name: players[0].Name,
+              shootingBoard: createBoardWithNumbers(),
+            },
+            player2: {
+              name: players[1].Name,
+              shootingBoard: createBoardWithNumbers(),
+            },
+          },
+        });
       }
     } catch (error: any) {
       alert(error);
     }
   };
 
-  const autoSymulation = () => {
+  const startAuto = () => {
     setRunAuto(true);
+  };
+
+  const stopAuto = () => {
+    setRunAuto(false);
   };
 
   const oneMove = async () => {
@@ -84,11 +109,9 @@ function Game() {
       </BoardsWrapper>
       <UserPanelWrapper>
         <MainButton btnText="Prepare game" handleOnClick={prepareGame} />
-        <MainButton
-          btnText="Start auto simulation"
-          handleOnClick={autoSymulation}
-        />
         <MainButton btnText="One move" handleOnClick={oneMove} />
+        <MainButton btnText="Start auto simulation" handleOnClick={startAuto} />
+        <MainButton btnText="Stop auto simulation" handleOnClick={stopAuto} />
       </UserPanelWrapper>
     </GameWrapper>
   );

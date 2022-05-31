@@ -1,3 +1,5 @@
+![seamlogo](https://user-images.githubusercontent.com/92270179/171294175-deb0c4fc-ef5f-45f2-a5d8-5db461ffa62c.png)
+
 # Sea Masters
 
 Your simulator of Battleship game!

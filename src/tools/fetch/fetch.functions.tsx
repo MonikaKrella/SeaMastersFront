@@ -21,8 +21,11 @@ export async function getPlayers(
   return response;
 }
 
-export async function makeOneTurn() {
-  const response = await fetch(`${apiBaseUrl}/Battleship/run-turn`, GetOptions);
+export async function makeOneTurn(id: string) {
+  const response = await fetch(
+    `${apiBaseUrl}/Battleship/run-turn?gameId=${id}`,
+    GetOptions
+  );
   if (response.ok) {
     const raport = await response.json();
     return raport as IRaport[];

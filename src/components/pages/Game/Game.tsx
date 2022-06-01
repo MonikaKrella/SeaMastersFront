@@ -4,11 +4,13 @@ import GameLegend from '../../organisms/GameLegend/GameLegend';
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
+import { IInitialGameData } from '../../../types/interfaces/IInitialGameData.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
 
 function Game() {
+  const [id, setId] = useState<string | null>(null);
   const [player1, setPlayer1] = useState<Iplayer | null>(null);
   const [player2, setPlayer2] = useState<Iplayer | null>(null);
   const [raport, setRaport] = useState<IRaport | null>(null);
@@ -17,13 +19,15 @@ function Game() {
   const [toStopAuto, setStopAuto] = useState(false);
 
   useEffect(() => {
-    if (runAuto) {
+    console.log('first use eeffecy');
+    if (toStopAuto) {
+    } else if (runAuto) {
       const interval = setInterval(() => {
         oneMove();
-      }, 800);
-      if (toStopAuto) {
-        clearInterval(interval);
-      }
+        if (toStopAuto) {
+          clearInterval(interval);
+        }
+      }, 100);
 
       return () => {
         clearInterval(interval);
@@ -32,6 +36,7 @@ function Game() {
   }, [runAuto]);
 
   useEffect(() => {
+    console.log('second use eeffecy');
     if (raports) {
       if (raports.length === 1) {
         setRaport(raports[0]);
@@ -40,10 +45,10 @@ function Game() {
         const interval = setInterval(() => {
           setRaport(raports[i]);
           i++;
-          if (i > raports.length - 1) {
+          if (i > raports.length - 1 || toStopAuto) {
             clearInterval(interval);
           }
-        }, 200);
+        }, 50);
         return () => {
           clearInterval(interval);
         };
@@ -55,9 +60,14 @@ function Game() {
     try {
       const response = await getPlayers('Jack Sparrow', 'Blackbeard');
       if (response.ok) {
-        const players = await response.json();
-        setPlayer1(players[0]);
-        setPlayer2(players[1]);
+        const initialGameData: IInitialGameData | null = await response.json();
+        if (!initialGameData) {
+          alert('Something went wrong, try again');
+        } else {
+          setPlayer1(initialGameData.Players[0]);
+          setPlayer2(initialGameData.Players[1]);
+          setId(initialGameData.Id);
+        }
       }
     } catch (error: any) {
       alert(error);
@@ -66,30 +76,37 @@ function Game() {
 
   const startAuto = () => {
     setRunAuto(true);
-  };
-
-  const stopAuto = () => {
     setStopAuto(false);
   };
 
+  const stopAuto = () => {
+    setRunAuto(false);
+  };
+
   const oneMove = async () => {
-    try {
-      const gettedRaports = await makeOneTurn();
-      if (!gettedRaports) {
-        alert('Ooops, something went wrong');
-      } else {
-        setRaports(gettedRaports);
+    console.log('one move');
+    if (id) {
+      try {
+        const gettedRaports = await makeOneTurn(id);
+        console.log(gettedRaports);
+        if (!gettedRaports) {
+          alert('Ooops, something went wrong');
+        } else {
+          setRaports(gettedRaports);
+        }
+      } catch (error: any) {
+        alert(error);
       }
-    } catch (error: any) {
-      alert(error);
+    } else {
+      alert('Prepare game to start');
     }
   };
 
   if (raport?.HasEnemyLost) {
-    // clearInterval(interval);
-    alert(raport.ActivePlayer.Name + ' won this battle!');
+    setStopAuto(true);
+    setRunAuto(false);
+    alert(`${raport.ActivePlayer.Name} won this battle`);
   }
-
   return (
     <GameWrapper>
       <BoardsWrapper>

@@ -13,11 +13,11 @@ type PropTypes = {
 
 function PlayerPanel(prop: PropTypes) {
   const [player, setPlayer] = useState<Iplayer | null>(null);
-  const [raport, setRaport] = useState<IRaport | null>(null);
   const [shipCoords, setShipCoords] = useState<ICoords[] | null>(null);
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    console.log('first player panel');
     if (prop.player) {
       setPlayer(player);
       const coordsOfShips: ICoords[] = [];
@@ -30,16 +30,14 @@ function PlayerPanel(prop: PropTypes) {
     }
   }, [prop.player]);
 
-  useEffect(() => {
-    if (prop.raport) {
-      if (prop.raport.ActivePlayer.Name === prop.player?.Name) {
-        setIsActive(true);
-      } else {
-        setIsActive(false);
-      }
-      setRaport(prop.raport);
+  let isPlayerActive = false;
+  if (prop.raport) {
+    if (prop.raport.ActivePlayer.Name === prop.player?.Name) {
+      isPlayerActive = true;
+    } else {
+      isPlayerActive = false;
     }
-  }, [prop]);
+  }
 
   return (
     <PlayerPanelStyled>
@@ -50,7 +48,7 @@ function PlayerPanel(prop: PropTypes) {
       <Board
         shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
         boardRaport={
-          isActive
+          isPlayerActive
             ? prop.raport?.ActivePlayer.PlayerShootingBoard.ShootingArea
             : prop.raport?.DefendingPlayerShootingBoard.ShootingArea
         }

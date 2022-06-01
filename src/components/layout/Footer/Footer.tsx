@@ -1,9 +1,11 @@
-import { FooterStyled } from './FooterStyled';
+import { FooterLink, FooterStyled } from './FooterStyled';
 
 function Footer() {
   return (
     <FooterStyled>
-      <a href="https://github.com/MonikaKrella">created by Monika Krella</a>
+      <FooterLink href="https://github.com/MonikaKrella">
+        created by Monika Krella
+      </FooterLink>
     </FooterStyled>
   );
 }

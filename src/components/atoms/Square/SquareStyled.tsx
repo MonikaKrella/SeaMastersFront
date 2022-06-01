@@ -9,7 +9,7 @@ interface Props {
 const getColor = (props: any) => {
   switch (props.bg) {
     case SquareEnum.Unknown:
-      return `#3B79CD `;
+      return `#3B79CD`;
     case SquareEnum.Hit:
       return `#993115`;
     case SquareEnum.Miss:
@@ -19,7 +19,7 @@ const getColor = (props: any) => {
     case SquareEnum.Ship:
       return `#A76A21`;
     default:
-      return `#3B79CD`;
+      return `#87919e`;
   }
 };
 

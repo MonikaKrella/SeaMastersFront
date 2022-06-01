@@ -27,8 +27,14 @@ export async function makeOneTurn(id: string) {
     GetOptions
   );
   if (response.ok) {
-    const raport = await response.json();
-    return raport as IRaport[];
+    const reports = await response.json();
+    return {
+      reports: reports as IRaport[],
+      status: response.status,
+    };
   }
-  return null;
+  return {
+    reports: null,
+    status: response.status,
+  };
 }

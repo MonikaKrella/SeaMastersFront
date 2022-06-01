@@ -1,18 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import Footer from './components/layout/Footer/Footer';
 import Game from './components/pages/Game/Game';
-import GlobalStyles from './components/layout/Gobal/Global';
 import Nav from './components/layout/Nav/Nav';
 import Rules from './components/pages/Rules/Rules';
-import { Container } from './components/layout/Container/Container.styled';
-
-const theme = {
-  colors: {
-    header: '#5688cb',
-    body: '#ccccca',
-  },
-};
+import GlobalStyles, { theme } from './styles/Gobal/Global';
+import { Container } from './styles/Container/Container.styled';
 
 function App() {
   return (
@@ -26,6 +20,7 @@ function App() {
             <Route path="/rules" element={<Rules />} />
           </Routes>
         </Container>
+        <Footer />
       </Router>
     </ThemeProvider>
   );

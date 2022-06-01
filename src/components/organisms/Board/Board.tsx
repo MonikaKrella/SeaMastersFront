@@ -1,12 +1,14 @@
 import Square from '../../atoms/Square/Square';
 import {
   BoardNumbersStyled,
+  BoardVerticalStyled,
   BoardWrapperStyled,
   GameBoardStyled,
 } from './BoardStyled';
 import { ICoords } from '../../../types/interfaces/ICoords.interface';
 import { SquareEnum } from '../../../types/enums/square.enum';
 import { createEmptySquaresBoard } from '../../../tools/boardTools/emptyBoard.creator';
+import { letters, numbers } from '../../../consts/arrays';
 
 type BoardPropType = {
   shipsCoords?: ICoords[] | null;
@@ -15,10 +17,7 @@ type BoardPropType = {
 };
 
 export function Board(prop: BoardPropType) {
-  const numbers: JSX.Element[] = [];
-  for (let index = 0; index < 10; index++) {
-    numbers.push(<Square key={`${index}a`} content={index + 1}></Square>);
-  }
+  const lettersArr = letters('A', 'J', true);
 
   let fields: JSX.Element[][] = [];
   if (prop.shipsCoords) {
@@ -43,8 +42,11 @@ export function Board(prop: BoardPropType) {
 
   return (
     <BoardWrapperStyled>
-      <BoardNumbersStyled>{numbers}</BoardNumbersStyled>
-      <GameBoardStyled>{fields}</GameBoardStyled>
+      <BoardVerticalStyled>{lettersArr}</BoardVerticalStyled>
+      <div>
+        <BoardNumbersStyled>{numbers}</BoardNumbersStyled>
+        <GameBoardStyled>{fields}</GameBoardStyled>
+      </div>
     </BoardWrapperStyled>
   );
 }

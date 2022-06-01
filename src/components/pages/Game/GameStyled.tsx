@@ -14,7 +14,6 @@ export const UserPanelWrapper = styled.div`
 `;
 
 export const GameWrapper = styled.div`
-  height: calc(100vh - 101px);
   display: flex;
   flex-direction: row;
   justify-content: space-around;

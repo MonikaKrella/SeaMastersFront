@@ -23,6 +23,11 @@ After cloning repository, in root directory invoke "npm i" to install packages.
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+## Tech Stack
+ - Typescript
+ - React
+ - Styled-components
+
 ## Ideas for future
  - tests
  - deploy

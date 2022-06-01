@@ -9,3 +9,8 @@ export const FooterStyled = styled.footer`
   align-items: flex-end;
   justify-content: flex-end;
 `;
+
+export const FooterLink = styled.a`
+  color: #ccccca;
+  text-decoration: none;
+`;

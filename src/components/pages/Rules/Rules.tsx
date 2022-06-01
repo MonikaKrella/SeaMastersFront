@@ -1,4 +1,5 @@
-import { RulesWrapper } from './RulesWrapper';
+import treasure from '../../../assets/treasure.png';
+import { RulesImage, RulesWrapper } from './RulesWrapper';
 
 function Rules() {
   return (
@@ -22,6 +23,7 @@ function Rules() {
         ships. Glory and honor go to winning pirate, who become the new Lord Of
         The Waters!
       </p>
+      <RulesImage src={treasure} alt="treasure" />
     </RulesWrapper>
   );
 }

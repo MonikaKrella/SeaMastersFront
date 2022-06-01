@@ -37,4 +37,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/92270179/171293894-c8b1b4e9-581d-4366-9117-07eb0a5eab6a.png)
+![image](https://user-images.githubusercontent.com/92270179/171473453-e0061eac-376d-4db0-952b-20115bb0c2db.png)

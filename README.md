@@ -36,7 +36,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
  - player versus computer & player versus player modes
 
 ## Screenshots
-
-![image](https://user-images.githubusercontent.com/92270179/171485981-298bebf7-39cf-4aff-b96f-67078b745de2.png)
+![image](https://user-images.githubusercontent.com/92270179/171494586-2c097079-23e1-4905-a8c7-65410b660ad7.png)
 ![image](https://user-images.githubusercontent.com/92270179/171491627-d4d695c2-c145-4ccd-a36d-646e93758940.png)
 

@@ -15,7 +15,7 @@ function Rules() {
       </p>
       <p>
         Like in classic Battleship Game, pirates have their ships at 10x10
-        boards. Both of them have 5 ships of lenght: 5x1, 4x1, 3x1, 2x1, 2x1.
+        boards. Both of them have 5 ships of lenght: 5x1, 4x1, 3x1, 3x1, 2x1.
         Pirates randomly decides, who will start. Active pirate can shoot as
         long as he hits enemy's ship. If active pirate misses, second pirate
         starts his firing. The battle ends, when one of pirates lost all of his

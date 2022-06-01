@@ -14,13 +14,14 @@ function Game() {
   const [raport, setRaport] = useState<IRaport | null>(null);
   const [raports, setRaports] = useState<IRaport[] | null>(null);
   const [runAuto, setRunAuto] = useState(false);
+  const [toStopAuto, setStopAuto] = useState(false);
 
   useEffect(() => {
     if (runAuto) {
       const interval = setInterval(() => {
         oneMove();
       }, 800);
-      if (!runAuto) {
+      if (toStopAuto) {
         clearInterval(interval);
       }
 
@@ -52,7 +53,7 @@ function Game() {
 
   const prepareGame = async () => {
     try {
-      const response = await getPlayers('Matylda', 'Bodzio');
+      const response = await getPlayers('Jack Sparrow', 'Blackbeard');
       if (response.ok) {
         const players = await response.json();
         setPlayer1(players[0]);
@@ -68,7 +69,7 @@ function Game() {
   };
 
   const stopAuto = () => {
-    setRunAuto(false);
+    setStopAuto(false);
   };
 
   const oneMove = async () => {
@@ -85,7 +86,7 @@ function Game() {
   };
 
   if (raport?.HasEnemyLost) {
-    setRunAuto(false);
+    // clearInterval(interval);
     alert(raport.ActivePlayer.Name + ' won this battle!');
   }
 

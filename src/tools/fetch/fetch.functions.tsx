@@ -1,13 +1,13 @@
-import { GetOptions, PostHeaders } from './fetch.consts';
+import { GetOptions, PostHeaders, apiBaseUrl } from './fetch.consts';
 import { IRaport } from '../../types/interfaces/IRaport.interface';
 
 export async function getPlayers(
-  name1: string,
-  name2: string
+  FirstPlayerName: string,
+  SecondPlayerName: string
 ): Promise<Response> {
   const raw = JSON.stringify({
-    name1: name1,
-    name2: name2,
+    FirstPlayerName: FirstPlayerName,
+    SecondPlayerName: SecondPlayerName,
   });
 
   const requestOptions = {
@@ -16,19 +16,13 @@ export async function getPlayers(
     body: raw,
   };
 
-  const response = await fetch(
-    'https://localhost:7014/api/Battleship/',
-    requestOptions
-  );
+  const response = await fetch(`${apiBaseUrl}/Battleship/`, requestOptions);
 
   return response;
 }
 
 export async function makeOneTurn() {
-  const response = await fetch(
-    'https://localhost:7014/api/Battleship/run-turn',
-    GetOptions
-  );
+  const response = await fetch(`${apiBaseUrl}/Battleship/run-turn`, GetOptions);
   if (response.ok) {
     const raport = await response.json();
     return raport as IRaport[];

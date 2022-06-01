@@ -20,7 +20,7 @@ export function Board(prop: BoardPropType) {
   const lettersArr = letters('A', 'J', true);
 
   let fields: JSX.Element[][] = [];
-  if (prop.shipsCoords) {
+  if (prop.shipsCoords && prop.shipsCoords.length > 0) {
     fields = createEmptySquaresBoard();
     prop.shipsCoords.forEach((coords) => {
       fields[coords.Y][coords.X] = (

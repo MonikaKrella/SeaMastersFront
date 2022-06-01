@@ -12,14 +12,10 @@ type PropTypes = {
 };
 
 function PlayerPanel(prop: PropTypes) {
-  const [player, setPlayer] = useState<Iplayer | null>(null);
   const [shipCoords, setShipCoords] = useState<ICoords[] | null>(null);
-  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    console.log('first player panel');
     if (prop.player) {
-      setPlayer(player);
       const coordsOfShips: ICoords[] = [];
       prop.player.Ships.forEach((ship) => {
         ship.Position.forEach((coords) => {
@@ -41,7 +37,7 @@ function PlayerPanel(prop: PropTypes) {
 
   return (
     <PlayerPanelStyled>
-      <NameHeading active={isActive}>
+      <NameHeading active={isPlayerActive}>
         {prop.player?.Name || 'Pirate'}
       </NameHeading>
       <Board shipsCoords={shipCoords} />

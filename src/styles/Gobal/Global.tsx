@@ -20,7 +20,7 @@ body {
 }
 
 div#root {
-background-color: '#ccccca';
+background-color: #ccccca;
 }
 
 code {

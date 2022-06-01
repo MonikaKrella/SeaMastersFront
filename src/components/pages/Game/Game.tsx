@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import GameLegend from '../../organisms/GameLegend/GameLegend';
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
+import { BUTTONS, ERROR } from '../../../consts/texts';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
 import { IInitialGameData } from '../../../types/interfaces/IInitialGameData.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
@@ -16,18 +17,16 @@ function Game() {
   const [raport, setRaport] = useState<IRaport | null>(null);
   const [raports, setRaports] = useState<IRaport[] | null>(null);
   const [runAuto, setRunAuto] = useState(false);
-  const [toStopAuto, setStopAuto] = useState(false);
+  const isFinished = useRef(false);
 
   useEffect(() => {
-    console.log('first use eeffecy');
-    if (toStopAuto) {
-    } else if (runAuto) {
+    if (runAuto) {
       const interval = setInterval(() => {
         oneMove();
-        if (toStopAuto) {
+        if (!runAuto) {
           clearInterval(interval);
         }
-      }, 100);
+      }, 1000);
 
       return () => {
         clearInterval(interval);
@@ -36,7 +35,6 @@ function Game() {
   }, [runAuto]);
 
   useEffect(() => {
-    console.log('second use eeffecy');
     if (raports) {
       if (raports.length === 1) {
         setRaport(raports[0]);
@@ -45,10 +43,13 @@ function Game() {
         const interval = setInterval(() => {
           setRaport(raports[i]);
           i++;
-          if (i > raports.length - 1 || toStopAuto) {
+          if (i > raports.length - 1) {
             clearInterval(interval);
           }
-        }, 50);
+          if (!runAuto) {
+            clearInterval(interval);
+          }
+        }, 300);
         return () => {
           clearInterval(interval);
         };
@@ -62,7 +63,7 @@ function Game() {
       if (response.ok) {
         const initialGameData: IInitialGameData | null = await response.json();
         if (!initialGameData) {
-          alert('Something went wrong, try again');
+          alert(`${ERROR.unknown}, try again`);
         } else {
           setPlayer1(initialGameData.Players[0]);
           setPlayer2(initialGameData.Players[1]);
@@ -70,13 +71,12 @@ function Game() {
         }
       }
     } catch (error: any) {
-      alert(error);
+      alert(ERROR.unknown);
     }
   };
 
   const startAuto = () => {
     setRunAuto(true);
-    setStopAuto(false);
   };
 
   const stopAuto = () => {
@@ -84,28 +84,28 @@ function Game() {
   };
 
   const oneMove = async () => {
-    console.log('one move');
     if (id) {
       try {
-        const gettedRaports = await makeOneTurn(id);
-        console.log(gettedRaports);
-        if (!gettedRaports) {
-          alert('Ooops, something went wrong');
+        const gettedData = await makeOneTurn(id);
+        if (gettedData.reports) {
+          setRaports(gettedData.reports);
         } else {
-          setRaports(gettedRaports);
+          setRunAuto(false);
+          if (gettedData.status !== 404) {
+            alert(ERROR.unknown);
+          }
         }
       } catch (error: any) {
-        alert(error);
+        setRunAuto(false);
+        alert(ERROR.unknown);
       }
     } else {
-      alert('Prepare game to start');
+      alert(ERROR.gameNotPrepaired);
     }
   };
-
-  if (raport?.HasEnemyLost) {
-    setStopAuto(true);
-    setRunAuto(false);
-    alert(`${raport.ActivePlayer.Name} won this battle`);
+  if (raport?.HasEnemyLost && !isFinished.current) {
+    alert(`${raport.ActivePlayer.Name} won this battle!`);
+    isFinished.current = true;
   }
   return (
     <GameWrapper>
@@ -114,10 +114,10 @@ function Game() {
         <PlayerPanel player={player2} raport={raport} />
       </BoardsWrapper>
       <UserPanelWrapper>
-        <MainButton btnText="Prepare game" handleOnClick={prepareGame} />
-        <MainButton btnText="One move" handleOnClick={oneMove} />
-        <MainButton btnText="Start auto simulation" handleOnClick={startAuto} />
-        <MainButton btnText="Stop auto simulation" handleOnClick={stopAuto} />
+        <MainButton btnText={BUTTONS.prepareGame} handleOnClick={prepareGame} />
+        <MainButton btnText={BUTTONS.oneMove} handleOnClick={oneMove} />
+        <MainButton btnText={BUTTONS.startAuto} handleOnClick={startAuto} />
+        <MainButton btnText={BUTTONS.stopAuto} handleOnClick={stopAuto} />
         <GameLegend />
       </UserPanelWrapper>
     </GameWrapper>

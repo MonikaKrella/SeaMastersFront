@@ -7,11 +7,14 @@ export const GameLegendStyled = styled.div`
 `;
 
 export const LegendRow = styled.div`
+  margin-left: 1.4rem;
   display: flex;
   flex-direction: row;
+  gap: 0.5rem;
 `;
 
 export const LegP = styled.p`
-  margin: 0;
+  margin: 0 0.2rem 0 0;
+  padding-bottom: 2px;
   font-size: 1rem;
 `;

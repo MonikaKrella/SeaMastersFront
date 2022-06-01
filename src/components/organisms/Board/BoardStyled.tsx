@@ -16,7 +16,7 @@ export const BoardVerticalStyled = styled.div`
 `;
 
 export const BoardWrapperStyled = styled.div`
-  max-width: 250px;
-  max-height: 250px;
+  max-width: 15.625rem;
+  max-height: 15.625rem;
   display: flex;
 `;

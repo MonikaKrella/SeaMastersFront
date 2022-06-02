@@ -8,6 +8,7 @@ import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
 import { IInitialGameData } from '../../../types/interfaces/IInitialGameData.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
+import { choosePirates } from '../../../tools/piratesTools/piratesTools';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
 
 function Game() {
@@ -59,7 +60,8 @@ function Game() {
 
   const prepareGame = async () => {
     try {
-      const response = await getPlayers('Jack Sparrow', 'Blackbeard');
+      const choosenPirates = choosePirates();
+      const response = await getPlayers(choosenPirates[0], choosenPirates[1]);
       if (response.ok) {
         const initialGameData: IInitialGameData | null = await response.json();
         if (!initialGameData) {

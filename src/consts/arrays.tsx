@@ -22,3 +22,17 @@ export const letters = (
   }
   return array;
 };
+
+export const pirates = [
+  'Jack Sparrow',
+  'Blackbread',
+  'Barbarossa Brothers',
+  'Sir Francis Drake',
+  `Thomas Tew`,
+  'Henry Morgan',
+  'Capitan Kidd',
+  'Calico Jack',
+  'Madame Cheng',
+  'Anny Bonney',
+  'Mary Read',
+];

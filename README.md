@@ -23,14 +23,18 @@ After cloning repository, in root directory invoke "npm i" to install packages.
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+### Deploy on Vercel
+SeaMasters is deployed on Vercel: https://sea-masters-front.vercel.app/ \
+Server site is still avaiable just as localhost - if you want to play the game it is necessary to run server.
+
 ## Tech Stack
  - Typescript
  - React
  - Styled-components
+ - React-error-boundary
 
 ## Ideas for future
  - tests
- - deploy
  - responsiveness
  - updating UI view
  - player versus computer & player versus player modes

@@ -5,6 +5,7 @@ import { ICoords } from '../../../types/interfaces/ICoords.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
 import { NameHeading, PlayerPanelStyled } from './PlayerPanelStyled';
+import { DEFAULT_PIRATE } from '../../../consts/gameSettings';
 
 type PropTypes = {
   player?: Iplayer | null;
@@ -38,9 +39,9 @@ function PlayerPanel(prop: PropTypes) {
   return (
     <PlayerPanelStyled>
       <NameHeading active={isPlayerActive}>
-        {prop.player?.Name || 'Pirate'}
+        {prop.player?.Name || DEFAULT_PIRATE}
       </NameHeading>
-      <Board shipsCoords={shipCoords} />
+      <Board shipsCoords={prop.player ? shipCoords : null} />
       <Board
         shootingArea={prop.player?.PlayerShootingBoard.ShootingArea}
         boardRaport={

@@ -1,4 +1,5 @@
 import Square from '../../atoms/Square/Square';
+import { BOARD_SIZE } from '../../../consts/gameSettings';
 import {
   BoardNumbersStyled,
   BoardVerticalStyled,
@@ -28,9 +29,9 @@ export function Board(prop: BoardPropType) {
       );
     });
   } else if (prop.boardRaport) {
-    for (let row = 0; row < 10; row++) {
+    for (let row = 0; row < BOARD_SIZE; row++) {
       fields.push([]);
-      for (let col = 0; col < 10; col++) {
+      for (let col = 0; col < BOARD_SIZE; col++) {
         fields[row].push(
           <Square bg={prop.boardRaport[row][col]} key={`${col}${row}`} />
         );

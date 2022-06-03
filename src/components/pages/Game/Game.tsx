@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import GameLegend from '../../organisms/GameLegend/GameLegend';
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
-import { BUTTONS, ERROR } from '../../../consts/texts';
+import { BUTTONS, ERROR, createWhoWonText } from '../../../consts/texts';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
+import { ButtonStyle } from '../../../types/enums/buttonStyles.enum';
 import { IInitialGameData } from '../../../types/interfaces/IInitialGameData.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
@@ -65,7 +66,7 @@ function Game() {
       if (response.ok) {
         const initialGameData: IInitialGameData | null = await response.json();
         if (!initialGameData) {
-          alert(`${ERROR.unknown}, try again`);
+          alert(ERROR.unknownWithTry);
         } else {
           setPlayer1(initialGameData.Players[0]);
           setPlayer2(initialGameData.Players[1]);
@@ -106,9 +107,18 @@ function Game() {
     }
   };
   if (raport?.HasEnemyLost && !isFinished.current) {
-    alert(`${raport.ActivePlayer.Name} won this battle!`);
+    alert(createWhoWonText(raport.ActivePlayer.Name));
     isFinished.current = true;
   }
+
+  const clear = () => {
+    setRunAuto(false);
+    setId(null);
+    setPlayer1(null);
+    setPlayer2(null);
+    setRaport(null);
+    setRaports(null);
+  };
   return (
     <GameWrapper>
       <BoardsWrapper>
@@ -116,10 +126,31 @@ function Game() {
         <PlayerPanel player={player2} raport={raport} />
       </BoardsWrapper>
       <UserPanelWrapper>
-        <MainButton btnText={BUTTONS.prepareGame} handleOnClick={prepareGame} />
-        <MainButton btnText={BUTTONS.oneMove} handleOnClick={oneMove} />
-        <MainButton btnText={BUTTONS.startAuto} handleOnClick={startAuto} />
-        <MainButton btnText={BUTTONS.stopAuto} handleOnClick={stopAuto} />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.prepareGame}
+          handleOnClick={prepareGame}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.oneMove}
+          handleOnClick={oneMove}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.startAuto}
+          handleOnClick={startAuto}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.stopAuto}
+          handleOnClick={stopAuto}
+        />
+        <MainButton
+          bg={ButtonStyle.Secondary}
+          btnText={BUTTONS.clearBoards}
+          handleOnClick={clear}
+        />
         <GameLegend />
       </UserPanelWrapper>
     </GameWrapper>

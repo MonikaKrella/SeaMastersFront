@@ -6,7 +6,7 @@ Your simulator of Battleship game!
 
 ## Idea
 
-Frontend part for server project of battleship game. See here --> [Server](https://github.com/MonikaKrella/SeaMasters-Battleship.)\
+Frontend part for server project of battleship game. See here --> [Server](https://github.com/MonikaKrella/SeaMasters-Battleship)\
 The simulation doesn't allow user to make any changes in logic. All data about the game comes from the server.
 User is able only to get starting data, and then manually invoke every turn or run auto mode.
 Created only as a desktop web app. 

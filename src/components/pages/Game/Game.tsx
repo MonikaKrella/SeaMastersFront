@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useEffect, useRef, useState } from 'react';
 
 import GameLegend from '../../organisms/GameLegend/GameLegend';
@@ -74,7 +75,7 @@ function Game() {
         }
       }
     } catch (error: any) {
-      alert(ERROR.unknown);
+      toast.error(ERROR.unknown);
     }
   };
 
@@ -95,19 +96,19 @@ function Game() {
         } else {
           setRunAuto(false);
           if (gettedData.status !== 404) {
-            alert(ERROR.unknown);
+            toast.error(ERROR.unknown);
           }
         }
       } catch (error: any) {
         setRunAuto(false);
-        alert(ERROR.unknown);
+        toast.error(ERROR.unknown);
       }
     } else {
-      alert(ERROR.gameNotPrepaired);
+      toast.error(ERROR.gameNotPrepaired);
     }
   };
   if (raport?.HasEnemyLost && !isFinished.current) {
-    alert(createWhoWonText(raport.ActivePlayer.Name));
+    toast(createWhoWonText(raport.ActivePlayer.Name), { icon: '☠️' });
     isFinished.current = true;
   }
 

@@ -1,13 +1,16 @@
+import toast from 'react-hot-toast';
 import { useEffect, useRef, useState } from 'react';
 
 import GameLegend from '../../organisms/GameLegend/GameLegend';
 import MainButton from '../../atoms/MainButton/MainButton';
 import PlayerPanel from '../../organisms/PlayerPanel/PlayerPanel';
-import { BUTTONS, ERROR } from '../../../consts/texts';
+import { BUTTONS, ERROR, createWhoWonText } from '../../../consts/texts';
 import { BoardsWrapper, GameWrapper, UserPanelWrapper } from './GameStyled';
+import { ButtonStyle } from '../../../types/enums/buttonStyles.enum';
 import { IInitialGameData } from '../../../types/interfaces/IInitialGameData.interface';
 import { IRaport } from '../../../types/interfaces/IRaport.interface';
 import { Iplayer } from '../../../types/interfaces/Iplayer.interface';
+import { choosePirates } from '../../../tools/piratesTools/piratesTools';
 import { getPlayers, makeOneTurn } from '../../../tools/fetch/fetch.functions';
 
 function Game() {
@@ -59,11 +62,12 @@ function Game() {
 
   const prepareGame = async () => {
     try {
-      const response = await getPlayers('Jack Sparrow', 'Blackbeard');
+      const choosenPirates = choosePirates();
+      const response = await getPlayers(choosenPirates[0], choosenPirates[1]);
       if (response.ok) {
         const initialGameData: IInitialGameData | null = await response.json();
         if (!initialGameData) {
-          alert(`${ERROR.unknown}, try again`);
+          alert(ERROR.unknownWithTry);
         } else {
           setPlayer1(initialGameData.Players[0]);
           setPlayer2(initialGameData.Players[1]);
@@ -71,7 +75,7 @@ function Game() {
         }
       }
     } catch (error: any) {
-      alert(ERROR.unknown);
+      toast.error(ERROR.unknown);
     }
   };
 
@@ -92,21 +96,30 @@ function Game() {
         } else {
           setRunAuto(false);
           if (gettedData.status !== 404) {
-            alert(ERROR.unknown);
+            toast.error(ERROR.unknown);
           }
         }
       } catch (error: any) {
         setRunAuto(false);
-        alert(ERROR.unknown);
+        toast.error(ERROR.unknown);
       }
     } else {
-      alert(ERROR.gameNotPrepaired);
+      toast.error(ERROR.gameNotPrepaired);
     }
   };
   if (raport?.HasEnemyLost && !isFinished.current) {
-    alert(`${raport.ActivePlayer.Name} won this battle!`);
+    toast(createWhoWonText(raport.ActivePlayer.Name), { icon: '☠️' });
     isFinished.current = true;
   }
+
+  const clear = () => {
+    setRunAuto(false);
+    setId(null);
+    setPlayer1(null);
+    setPlayer2(null);
+    setRaport(null);
+    setRaports(null);
+  };
   return (
     <GameWrapper>
       <BoardsWrapper>
@@ -114,10 +127,31 @@ function Game() {
         <PlayerPanel player={player2} raport={raport} />
       </BoardsWrapper>
       <UserPanelWrapper>
-        <MainButton btnText={BUTTONS.prepareGame} handleOnClick={prepareGame} />
-        <MainButton btnText={BUTTONS.oneMove} handleOnClick={oneMove} />
-        <MainButton btnText={BUTTONS.startAuto} handleOnClick={startAuto} />
-        <MainButton btnText={BUTTONS.stopAuto} handleOnClick={stopAuto} />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.prepareGame}
+          handleOnClick={prepareGame}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.oneMove}
+          handleOnClick={oneMove}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.startAuto}
+          handleOnClick={startAuto}
+        />
+        <MainButton
+          bg={ButtonStyle.Primary}
+          btnText={BUTTONS.stopAuto}
+          handleOnClick={stopAuto}
+        />
+        <MainButton
+          bg={ButtonStyle.Secondary}
+          btnText={BUTTONS.clearBoards}
+          handleOnClick={clear}
+        />
         <GameLegend />
       </UserPanelWrapper>
     </GameWrapper>

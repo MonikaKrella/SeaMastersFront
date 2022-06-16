@@ -6,7 +6,7 @@ interface Props {
   bg?: SquareEnum;
 }
 
-const getColor = (props: any) => {
+const getColor = (props: Props) => {
   switch (props.bg) {
     case SquareEnum.Unknown:
       return `#3B79CD`;
